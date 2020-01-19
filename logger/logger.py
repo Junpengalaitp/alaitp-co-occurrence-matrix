@@ -15,7 +15,8 @@ def init_dir(env_key='LOG_CFG'):
         path = value
     if os.path.exists(path):
         with open(path, "r") as f:
-            _dict = yaml.load(f)
+            # _dict = yaml.load(f)
+            _dict = yaml.load(f, Loader=yaml.FullLoader)
             handlers = _dict['handlers']
             for key in handlers:
                 handler = handlers[key]
@@ -45,7 +46,7 @@ def setup_logging(default_level=logging.INFO, env_key='LOG_CFG'):
         path = value
     if os.path.exists(path):
         with open(path, "r") as f:
-            logging.config.dictConfig(yaml.load(f))
+            logging.config.dictConfig(yaml.load(f, Loader=yaml.FullLoader))
     else:
         logging.basicConfig(level=default_level)
 

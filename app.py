@@ -1,12 +1,15 @@
-from flask import Flask
+from waitress import serve
 
-app = Flask(__name__)
+from config.read_config import get_config
+from controller import app
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+def start_web_service():
+    """Start the service using the IP and PORT configured in the config.ini"""
+    host = get_config("WEB_SERVER", "IP")
+    port = get_config("WEB_SERVER", "PORT")
+    serve(app, host=host, port=port)
 
 
 if __name__ == '__main__':
-    app.run()
+    start_web_service()
