@@ -21,16 +21,14 @@ class CoOccurrenceMatrix:
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = object.__new__(cls, *args, **kwargs)
+            cls._instance = object.__new__(cls)
         return cls._instance
 
     def __init__(self):
         self.keyword_df = get_keywords_df(10000)
         self.unique_keyword = list(self.keyword_df.keyword_name.unique())
-        self.keyword_idx = [self.unique_keyword.index(word) for word in self.unique_keyword]
-        self.keyword_dict = dict(zip(self.unique_keyword, self.keyword_idx))
-        self.idx_to_keyword = dict(zip(self.keyword_idx, self.unique_keyword))
-
+        self.keyword_category_map = self._get_category_map()
+        self.keyword_idx_dict = {word: self.unique_keyword.index(word) for word in self.unique_keyword}
         self.entity_entity_matrix = self._get_entity_entity_matrix()
         logger.info(f"loaded entity_entity_matrix, size(row * column): {self.entity_entity_matrix.shape}")
 
@@ -45,11 +43,21 @@ class CoOccurrenceMatrix:
 
         for key in keyword_dict:
             for item in keyword_dict[key]:
-                row_idx = self.keyword_dict[item[0]]
+                row_idx = self.keyword_idx_dict[item[0]]
                 for word in keyword_dict[key]:
-                    col_idx = self.keyword_dict[word[0]]
+                    col_idx = self.keyword_idx_dict[word[0]]
                     entity_entity_matrix[row_idx, col_idx] += 1
         return entity_entity_matrix
+
+    def _get_category_map(self):
+        category_map = defaultdict(str)
+        for word in self.unique_keyword:
+            try:
+                category_map[word] = self.keyword_df[self.keyword_df.keyword_name == word]["keyword_type"].values[0]
+            except:
+                logger.info(word, "not found in the keyword df")
+                continue
+        return category_map
 
     def reload_co_occurrence_matrix(self):
         self.__init__()

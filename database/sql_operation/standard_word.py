@@ -7,6 +7,7 @@ def select_keywords(limit):
     query = f"""
                 SELECT job_id, job_title, keyword_name, keyword_type, count 
                 FROM keywords_job_model 
+                WHERE keyword_type != 'ORG'
                 LIMIT {limit}
              """
     return pd.read_sql_query(query, conn)
