@@ -25,7 +25,7 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        self.keyword_df = get_keywords_df(10000)
+        self.keyword_df = get_keywords_df(200000)
         self.unique_keyword = list(self.keyword_df.keyword_name.unique())
         self.keyword_category_map = self._get_category_map()
         self.keyword_idx_dict = {word: self.unique_keyword.index(word) for word in self.unique_keyword}

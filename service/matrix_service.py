@@ -1,11 +1,14 @@
 from collections import OrderedDict
+import pprint
 
 import numpy as np
 
 from co_occurrence_matrix import co_occurrence_matrix
 
+pp = pprint.PrettyPrinter()
 
-def get_most_related_words(word: str, n: int) -> dict:
+
+def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
     """ word: the query word
         n: top n
     """
@@ -17,10 +20,10 @@ def get_most_related_words(word: str, n: int) -> dict:
 
     # get the row of the word we are looking for
     co_occurred_word_list = co_occurrence_matrix.entity_entity_matrix[word_index]
-    co_occurred_word_list_by_category = get_category_words(co_occurred_word_list)
     # Sort the index by value, return indices of the highest value to the lowest
-    top_n_indices = np.argsort(co_occurred_word_list_by_category)[::-1][0:n]
-    top_n_counts = co_occurred_word_list_by_category[top_n_indices]
+    sorted_indices = np.argsort(co_occurred_word_list)[::-1]
+    top_n_indices = get_top_n_by_categories(sorted_indices, n, categories)
+    top_n_counts = co_occurred_word_list[top_n_indices]
     for i, idx in enumerate(top_n_indices):
         keyword = co_occurrence_matrix.unique_keyword[idx]
         if keyword != word:  # remove word itself
@@ -28,16 +31,18 @@ def get_most_related_words(word: str, n: int) -> dict:
     return top_n_dict
 
 
-def get_category_words(co_occurred_word_list: np.ndarray, categories: list = None) -> np.ndarray:
+def get_top_n_by_categories(sorted_indices: np.ndarray, count: int = 10, categories: list = None) -> np.ndarray:
     if not categories:
-        return co_occurred_word_list
+        return sorted_indices[0:count+1]
     else:
-        remove_list = []
-        for i, j in enumerate(co_occurred_word_list):
-            word = co_occurrence_matrix.unique_keyword[i]
+        index_in_category = []
+        for index in sorted_indices:
+            word = co_occurrence_matrix.unique_keyword[index]
             category = co_occurrence_matrix.keyword_category_map[word]
-            if category not in categories:
-                remove_list.append(i)
-                print(word, category, "removed")
-        result_list = np.delete(co_occurred_word_list, remove_list)
-        return result_list
+            if category in categories:
+                index_in_category.append(index)
+                if len(index_in_category) > count:
+                    break
+        return np.asarray(index_in_category, dtype=np.int32)
+
+

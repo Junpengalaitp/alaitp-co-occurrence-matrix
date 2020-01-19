@@ -3,3 +3,5 @@ venv
 /.idea/dictionaries/
 /notebook/.ipynb_checkpoints/
 *.log
+/logs
+dask-worker-space
