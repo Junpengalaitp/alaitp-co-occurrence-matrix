@@ -5,7 +5,9 @@ from collections import defaultdict
 import numpy as np
 
 from logger.logger import setup_logging
-from service.keyword_service import get_keywords_df
+from service.cache_service import store_matrix_cache, get_matrix_cache
+from service.keyword_service import get_keyword_df
+from util.timer import timeit
 
 setup_logging()
 logger = logging.getLogger("fileLogger")
@@ -25,19 +27,39 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        self.keyword_df = get_keywords_df(200000)
-        self.unique_keyword = list(self.keyword_df.keyword_name.unique())
+        amount = 300000
+        self.keyword_df = get_keyword_df(amount)
+        self.unique_keyword = self._get_unique_keyword()
         self.keyword_category_map = self._get_category_map()
-        self.keyword_idx_dict = {word: self.unique_keyword.index(word) for word in self.unique_keyword}
+        self.keyword_idx_dict = self._get_keyword_idx_dict()
         self.entity_entity_matrix = self._get_entity_entity_matrix()
         logger.info(f"loaded entity_entity_matrix, size(row * column): {self.entity_entity_matrix.shape}")
 
-    def _get_entity_entity_matrix(self):
+    @timeit
+    def _get_unique_keyword(self):
+        return list(self.keyword_df.standard_word.unique())
+
+    @timeit
+    def _get_keyword_idx_dict(self):
+        return {word: self.unique_keyword.index(word) for word in self.unique_keyword}
+
+    @timeit
+    def _get_category_map(self):
+        category_map = defaultdict(str)
+        for row in self.keyword_df.itertuples():
+            category_map[row.standard_word] = row.keyword_type
+        return category_map
+
+    @timeit
+    def _get_entity_entity_matrix(self) -> np.ndarray:
+        cache = get_matrix_cache()
+        if isinstance(cache, np.ndarray):
+            return cache
         entity_entity_matrix = np.zeros((len(self.unique_keyword), len(self.unique_keyword)), np.float64)
         keyword_dict = defaultdict(list)
         for row in self.keyword_df.itertuples():
             # Check whether the job_id exist
-            keyword_tuple = (row.keyword_name, row.count, row.keyword_type)
+            keyword_tuple = (row.standard_word, row.count, row.keyword_type)
             job_id = row.job_id
             keyword_dict[job_id].append(keyword_tuple)
 
@@ -47,17 +69,8 @@ class CoOccurrenceMatrix:
                 for word in keyword_dict[key]:
                     col_idx = self.keyword_idx_dict[word[0]]
                     entity_entity_matrix[row_idx, col_idx] += 1
+        store_matrix_cache(entity_entity_matrix)
         return entity_entity_matrix
-
-    def _get_category_map(self):
-        category_map = defaultdict(str)
-        for word in self.unique_keyword:
-            try:
-                category_map[word] = self.keyword_df[self.keyword_df.keyword_name == word]["keyword_type"].values[0]
-            except:
-                logger.info(word, "not found in the keyword df")
-                continue
-        return category_map
 
     def reload_co_occurrence_matrix(self):
         self.__init__()

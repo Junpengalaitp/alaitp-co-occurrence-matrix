@@ -25,8 +25,11 @@ def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
     top_n_indices = get_top_n_by_categories(sorted_indices, n, categories)
     top_n_counts = co_occurred_word_list[top_n_indices]
     for i, idx in enumerate(top_n_indices):
-        keyword = co_occurrence_matrix.unique_keyword[idx]
-        if keyword != word:  # remove word itself
+        try:
+            keyword = co_occurrence_matrix.unique_keyword[idx]
+        except IndexError:
+            continue
+        if keyword != word and top_n_counts[i] != 0:  # remove word itself and count 0 words
             top_n_dict[keyword] = top_n_counts[i]
     return top_n_dict
 
@@ -37,7 +40,10 @@ def get_top_n_by_categories(sorted_indices: np.ndarray, count: int = 10, categor
     else:
         index_in_category = []
         for index in sorted_indices:
-            word = co_occurrence_matrix.unique_keyword[index]
+            try:
+                word = co_occurrence_matrix.unique_keyword[index]
+            except IndexError:
+                continue
             category = co_occurrence_matrix.keyword_category_map[word]
             if category in categories:
                 index_in_category.append(index)

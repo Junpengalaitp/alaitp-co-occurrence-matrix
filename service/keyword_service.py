@@ -2,19 +2,18 @@ import pandas as pd
 import requests
 
 from database.sql_operation.standard_word import select_keywords
+from service.cache_service import get_keyword_df_cache
+from util.timer import timeit
 
 
-def get_keywords_df(limit: int) -> pd.DataFrame:
-    df = select_keywords(limit)
-    standardize_keyword(df)
+@timeit
+def get_keyword_df(limit: int) -> pd.DataFrame:
+    cache = get_keyword_df_cache()
+    if isinstance(cache, pd.DataFrame):
+        return cache
+    else:
+        df = select_keywords(limit)
     return df
-
-
-def standardize_keyword(keyword_df: pd.DataFrame):
-    distinct_words = keyword_df.keyword_name.unique()
-    for word in distinct_words:
-        standard_word = request_standard_word(word)
-        keyword_df.loc[keyword_df.keyword_name == word, "keyword_name"] = standard_word
 
 
 def request_standard_word(word: str) -> str:
@@ -24,6 +23,5 @@ def request_standard_word(word: str) -> str:
 
 
 if __name__ == '__main__':
-    df = get_keywords_df(10000)
-    standardize_keyword(df)
+    df = get_keyword_df(10000)
     print(df["keyword_name"].tolist())

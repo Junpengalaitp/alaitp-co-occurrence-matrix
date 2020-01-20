@@ -53,4 +53,4 @@ def setup_logging(default_level=logging.INFO, env_key='LOG_CFG'):
 
 init_dir()
 setup_logging()
-logger = logging.getLogger("fileLogger")
+log = logging.getLogger("fileLogger")

@@ -18,7 +18,10 @@ def generate_most_correlated_words(word: str, amount: int, categories: str = Non
     logger.info(f"Received request, word: '{word}'")
     word = request_standard_word(word)
     if word and amount:
-        category_list = [category_dict[ct] for ct in categories.split(",")]
+        if "all" in categories:
+            category_list = None
+        else:
+            category_list = [category_dict[ct] for ct in categories.split(",")]
         most_correlated_words = get_most_related_words(word, amount, category_list)
     else:
         most_correlated_words = None
