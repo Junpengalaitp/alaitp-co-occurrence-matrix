@@ -1,11 +1,11 @@
 import redis
 
-from config.read_config import get_config
+from config.config_server import CONFIG
 
-SERVER_IP = get_config('REDIS', 'IP')
-PORT = get_config('REDIS', 'PORT')
-DB = get_config('REDIS', 'DB')
+HOST = CONFIG['spring.redis.host']
+PORT = CONFIG['spring.redis.port']
+DB = CONFIG['spring.redis.database']
 
-pool = redis.ConnectionPool(host=SERVER_IP, port=PORT, db=DB)
+pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB)
 
 redis_template = redis.Redis(connection_pool=pool)

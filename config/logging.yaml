@@ -28,7 +28,7 @@ handlers:
 
         formatter: simple
 
-        filename: F:\logs\hotspotgen.log
+        filename: /Users/hejunpeng/alaitp/alaitp-co-occurrence-matrix/logs/application-info.log
 
         when: midnight
 
@@ -46,7 +46,7 @@ handlers:
 
         formatter: simple
 
-        filename: F:\logs\hotspotgen_db.log
+        filename: /Users/hejunpeng/alaitp/alaitp-co-occurrence-matrix/logs/application-info.log
 
         maxBytes: 104857600  # 100MB
 
@@ -62,7 +62,7 @@ handlers:
 
         formatter: simple
 
-        filename: F:\logs\hotspotgen_errors.log
+        filename: /Users/hejunpeng/alaitp/alaitp-co-occurrence-matrix/logs/application-error.log
 
         backupCount: 20
 

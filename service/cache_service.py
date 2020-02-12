@@ -4,15 +4,16 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 
-from config.read_config import get_config
 from config.redis_config import redis_template
 from constants.constants import KEYWORD_DF_KEY, MATRIX_KEY
 from logger.logger import log
 
-enable_cache = bool(int(get_config('CACHE', 'ON')))
+enable_cache = False
 
 
 def store_keyword_df_cache(df: pd.DataFrame):
+    if not enable_cache:
+        return
     redis_template.set(KEYWORD_DF_KEY, df.to_msgpack(compress="zlib"))
     log.info("stored the keyword_df in redis as cache")
 
@@ -27,6 +28,8 @@ def get_keyword_df_cache() -> Optional[pd.DataFrame]:
 
 
 def store_matrix_cache(matrix: np.ndarray):
+    if not enable_cache:
+        return
     redis_template.set(MATRIX_KEY, json.dumps(matrix.tolist()))
     log.info("stored the matrix in redis as cache")
 

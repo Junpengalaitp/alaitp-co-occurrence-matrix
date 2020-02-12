@@ -17,7 +17,7 @@ def get_keyword_df(limit: int) -> pd.DataFrame:
 
 
 def request_standard_word(word: str) -> str:
-    r = requests.get(f"http://127.0.0.1:8812/standardize-word/{word}")
+    r = requests.get(f"http://localhost:8888/word-standardization/standardize-word/{word}")
     if r and r.status_code == 200:
         return r.text
 

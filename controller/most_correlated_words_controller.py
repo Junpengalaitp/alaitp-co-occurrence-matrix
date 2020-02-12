@@ -13,7 +13,7 @@ setup_logging()
 logger = logging.getLogger("fileLogger")
 
 
-@app.route('/co-occurrence-matrix/most-correlated-words/<string:word>/<int:amount>/<string:categories>', methods=['GET'])
+@app.route('/most-correlated-words/<string:word>/<int:amount>/<string:categories>', methods=['GET'])
 def generate_most_correlated_words(word: str, amount: int, categories: str = None) -> dict:
     logger.info(f"Received request, word: '{word}'")
     word = request_standard_word(word)
