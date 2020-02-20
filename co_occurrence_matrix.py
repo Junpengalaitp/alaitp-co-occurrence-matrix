@@ -1,16 +1,12 @@
-import logging
 import os
 from collections import defaultdict
 
 import numpy as np
 
-from logger.logger import setup_logging
+from logger.logger import log
 from service.cache_service import store_matrix_cache, get_matrix_cache
 from service.keyword_service import get_keyword_df
 from util.timer import timeit
-
-setup_logging()
-logger = logging.getLogger("fileLogger")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,18 +29,18 @@ class CoOccurrenceMatrix:
         self.keyword_category_map = self._get_category_map()
         self.keyword_idx_dict = self._get_keyword_idx_dict()
         self.entity_entity_matrix = self._get_entity_entity_matrix()
-        logger.info(f"loaded entity_entity_matrix, size(row * column): {self.entity_entity_matrix.shape}")
+        log.info(f"loaded entity_entity_matrix, size(row * column): {self.entity_entity_matrix.shape}")
 
     @timeit
-    def _get_unique_keyword(self):
+    def _get_unique_keyword(self) -> list:
         return list(self.keyword_df.standard_word.unique())
 
     @timeit
-    def _get_keyword_idx_dict(self):
+    def _get_keyword_idx_dict(self) -> dict:
         return {word: self.unique_keyword.index(word) for word in self.unique_keyword}
 
     @timeit
-    def _get_category_map(self):
+    def _get_category_map(self) -> dict:
         category_map = defaultdict(str)
         for row in self.keyword_df.itertuples():
             category_map[row.standard_word] = row.keyword_type
@@ -78,6 +74,3 @@ class CoOccurrenceMatrix:
 
 # init singleton
 co_occurrence_matrix = CoOccurrenceMatrix()
-
-
-
