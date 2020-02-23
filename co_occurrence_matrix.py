@@ -23,7 +23,7 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        amount = 100000
+        amount = 1000000
         self.keyword_df = get_keyword_df(amount)
         self.unique_keyword = self._get_unique_keyword()
         self.keyword_category_map = self._get_category_map()

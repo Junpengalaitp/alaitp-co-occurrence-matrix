@@ -15,5 +15,13 @@ def start_web_service():
     serve(app, host=SERVER_IP, port=PORT)
 
 
+def start_test_server():
+    SERVER_IP = CONFIG['web.server.ip']
+    PORT = 5001
+    connect_eureka(SERVER_IP, PORT)
+    app.run(host="localhost", port=PORT)
+
+
 if __name__ == '__main__':
-    start_web_service()
+    # start_web_service()
+    start_test_server()
