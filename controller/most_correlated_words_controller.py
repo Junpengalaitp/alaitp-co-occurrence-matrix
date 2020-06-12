@@ -5,6 +5,7 @@ from flask import jsonify
 from constants.category import category_dict
 from controller import app
 from logger.logger import setup_logging
+from service.cache_service import get_standard_word_cache
 from service.keyword_service import request_standard_word
 
 from service.matrix_service import get_most_related_words
@@ -16,7 +17,7 @@ logger = logging.getLogger("fileLogger")
 @app.route('/most-correlated-words/<string:word>/<int:amount>/<string:categories>', methods=['GET'])
 def generate_most_correlated_words(word: str, amount: int, categories: str = None) -> dict:
     logger.info(f"Received request, word: '{word}'")
-    word = request_standard_word(word)
+    word = get_standard_word_cache(word)
     if word and amount:
         if "all" in categories:
             category_list = None
