@@ -28,7 +28,7 @@ handlers:
 
         formatter: simple
 
-        filename: /Users/hejunpeng/alaitp/alaitp-co-occurrence-matrix/logs/application-info.log
+        filename: C:/ALAITP/alaitp-co-occurrence-matrix/logs/alaitp-co-occurrence-matrix-info.log
 
         when: midnight
 
@@ -46,7 +46,7 @@ handlers:
 
         formatter: simple
 
-        filename: /Users/hejunpeng/alaitp/alaitp-co-occurrence-matrix/logs/application-info.log
+        filename: C:/ALAITP/alaitp-co-occurrence-matrix/logs/alaitp-co-occurrence-matrix-db.log
 
         maxBytes: 104857600  # 100MB
 
@@ -62,7 +62,7 @@ handlers:
 
         formatter: simple
 
-        filename: /Users/hejunpeng/alaitp/alaitp-co-occurrence-matrix/logs/application-error.log
+        filename: C:/ALAITP/alaitp-co-occurrence-matrix/logs/alaitp-co-occurrence-matrix-error.log
 
         backupCount: 20
 
