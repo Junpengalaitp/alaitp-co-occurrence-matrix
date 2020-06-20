@@ -1,5 +1,4 @@
 import pandas as pd
-import requests
 
 from database.sql_operation.standard_word import select_keywords
 from service.cache_service import get_keyword_df_cache
@@ -14,12 +13,6 @@ def get_keyword_df(limit: int) -> pd.DataFrame:
     else:
         df = select_keywords(limit)
     return df
-
-
-def request_standard_word(word: str) -> str:
-    r = requests.get(f"http://localhost:8888/job-keyword/standardize-word/{word}")
-    if r and r.status_code == 200:
-        return r.text
 
 
 if __name__ == '__main__':

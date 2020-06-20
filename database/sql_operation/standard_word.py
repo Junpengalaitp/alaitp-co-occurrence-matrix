@@ -1,6 +1,6 @@
 import pandas as pd
 
-from database.sqlalchemy_manager import conn
+from config.sql_config import conn
 
 
 def select_keywords(limit):

@@ -2,8 +2,8 @@ import os
 from collections import defaultdict
 
 import numpy as np
+from loguru import logger
 
-from logger.logger import log
 from service.cache_service import store_matrix_cache, get_matrix_cache
 from service.keyword_service import get_keyword_df
 from util.timer import timeit
@@ -29,7 +29,7 @@ class CoOccurrenceMatrix:
         self.keyword_category_map = self._get_category_map()
         self.keyword_idx_dict = self._get_keyword_idx_dict()
         self.entity_entity_matrix = self._get_entity_entity_matrix()
-        log.info(f"loaded entity_entity_matrix, size(row * column): {self.entity_entity_matrix.shape}")
+        logger.info(f"loaded entity_entity_matrix, size(row * column): {self.entity_entity_matrix.shape}")
 
     @timeit
     def _get_unique_keyword(self) -> list:

@@ -1,6 +1,6 @@
 import time
 
-from logger.logger import log
+from loguru import logger
 
 
 def timeit(method):
@@ -8,6 +8,6 @@ def timeit(method):
         start = time.perf_counter()
         result = method(*args, **kw)
         end = time.perf_counter()
-        log.info(f"{method.__name__} finished in {round(end - start, 4)} seconds")
+        logger.info(f"{method.__name__} finished in {round(end - start, 4)} seconds")
         return result
     return timed

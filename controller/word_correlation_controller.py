@@ -1,15 +1,10 @@
-import logging
-
 from flask import jsonify
+from loguru import logger
 
 from constants.category import category_dict
 from controller import app
-from logger.logger import setup_logging
 from service.cache_service import get_standard_word_cache
 from service.matrix_service import get_most_related_words
-
-setup_logging()
-logger = logging.getLogger("fileLogger")
 
 no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}  # dummy data for no res
 
