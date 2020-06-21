@@ -8,4 +8,4 @@ mysql-connector-python==8.0.19
 waitress==1.4.2
 requests==2.22.0
 psycopg2-binary==2.8.4
-py_eureka_client==0.74
+py_eureka_client==0.7.4
