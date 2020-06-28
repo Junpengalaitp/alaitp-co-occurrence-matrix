@@ -8,7 +8,7 @@ from loguru import logger
 from config.redis_config import redis_template
 from constants.constants import KEYWORD_DF_KEY, MATRIX_KEY
 
-enable_cache = False
+enable_cache = True
 
 
 def store_keyword_df_cache(df: pd.DataFrame):
@@ -43,9 +43,23 @@ def get_matrix_cache() -> Optional[np.ndarray]:
         return np.asarray(json.loads(cache), dtype=np.float64)
 
 
+def standard_word_cache_exist(other_word: str):
+    cache = redis_template.db(3).get(other_word)
+    if cache:
+        return True
+    return False
+
+
 def get_standard_word_cache(other_word: str) -> str:
     cache = redis_template.db(3).get(other_word)
     if cache:
         return cache.decode("utf-8")
     else:
         return other_word
+
+
+def set_standard_word_cache(other_word: str, standard_word: str):
+    if not enable_cache:
+        return
+    redis_template.db(3).set(other_word, standard_word)
+    logger.info(f"stored the standard word: {standard_word} of {other_word} in redis as cache")

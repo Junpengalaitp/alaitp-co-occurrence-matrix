@@ -23,7 +23,7 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        amount = 500000
+        amount = 200000
         self.keyword_df = get_keyword_df(amount)
         self.unique_keyword = self._get_unique_keyword()
         self.keyword_category_map = self._get_category_map()
@@ -48,9 +48,9 @@ class CoOccurrenceMatrix:
 
     @timeit
     def _get_entity_entity_matrix(self) -> np.ndarray:
-        cache = get_matrix_cache()
-        if isinstance(cache, np.ndarray):
-            return cache
+        # cache = get_matrix_cache()
+        # if isinstance(cache, np.ndarray):
+        #     return cache
         entity_entity_matrix = np.zeros((len(self.unique_keyword), len(self.unique_keyword)), np.float64)
         keyword_dict = defaultdict(list)
         for row in self.keyword_df.itertuples():
@@ -65,7 +65,7 @@ class CoOccurrenceMatrix:
                 for word in keyword_dict[key]:
                     col_idx = self.keyword_idx_dict[word[0]]
                     entity_entity_matrix[row_idx, col_idx] += 1
-        store_matrix_cache(entity_entity_matrix)
+        # store_matrix_cache(entity_entity_matrix)
         return entity_entity_matrix
 
     def reload_co_occurrence_matrix(self):

@@ -3,7 +3,7 @@ from loguru import logger
 
 from constants.category import category_dict
 from controller import app
-from service.cache_service import get_standard_word_cache
+from service import keyword_service
 from service.matrix_service import get_most_related_words
 
 no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}  # dummy data for no res
@@ -12,7 +12,7 @@ no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": 
 @app.route('/most-correlated-words/<string:word>/<int:amount>/<string:categories>', methods=['GET'])
 def generate_most_correlated_words(word: str, amount: int, categories: str = None) -> dict:
     logger.info(f"Received request, word: '{word}'")
-    word = get_standard_word_cache(word)
+    word = keyword_service.get_standard_word(word)
     if word and amount:
         if "all" in categories:
             category_list = None
