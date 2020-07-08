@@ -1,3 +1,5 @@
+"""redis cache operations"""
+
 import json
 from typing import Optional
 
@@ -6,7 +8,7 @@ import pandas as pd
 from loguru import logger
 
 from config.redis_config import redis_template
-from constants.constants import KEYWORD_DF_KEY, MATRIX_KEY
+from constant.constant import KEYWORD_DF_KEY, MATRIX_KEY
 
 enable_cache = True
 

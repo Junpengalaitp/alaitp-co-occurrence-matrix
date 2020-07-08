@@ -1,16 +1,19 @@
 from flask import jsonify
 from loguru import logger
 
-from constants.category import category_dict
+from constant.category import category_dict
 from controller import app
 from service import keyword_service
 from service.matrix_service import get_most_related_words
 
-no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}  # dummy data for no res
+"""Dummy response for no correlated word found"""
+no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}
 
 
 @app.route('/most-correlated-words/<string:word>/<int:amount>/<string:categories>', methods=['GET'])
 def generate_most_correlated_words(word: str, amount: int, categories: str = None) -> dict:
+    """First standardize the word, then get the correlated word from the matrix by category"""
+
     logger.info(f"Received request, word: '{word}'")
     word = keyword_service.get_standard_word(word)
     if word and amount:
