@@ -8,7 +8,7 @@ from controller import app
 
 
 def start_web_service():
-    """Start the service using the IP and PORT configured in the config.ini"""
+    """Start the waitress server using the IP and PORT configured in the config.ini"""
     SERVER_IP = CONFIG['web.server.ip']
     PORT = randint(27018, 65535)
     connect_eureka(SERVER_IP, PORT)
@@ -16,6 +16,7 @@ def start_web_service():
 
 
 def start_test_server():
+    """Start the dev server"""
     SERVER_IP = CONFIG['web.server.ip']
     PORT = 5001
     connect_eureka(SERVER_IP, PORT)

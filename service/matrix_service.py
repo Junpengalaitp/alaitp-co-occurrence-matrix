@@ -1,6 +1,7 @@
 import pprint
 
 import numpy as np
+from loguru import logger
 
 from co_occurrence_matrix import co_occurrence_matrix
 
@@ -8,13 +9,17 @@ pp = pprint.PrettyPrinter()
 
 
 def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
-    """ word: the query word
-        n: top n
+    """
+    get top n for correlated words for word by category
+    :param word: the root word for correlated words
+    :param n: top n
+    :param categories: correlated words category
     """
     top_n_dict = {}
     try:
         word_index = co_occurrence_matrix.keyword_idx_dict[word]
     except KeyError:  # the word does not exist
+        logger.warning(f"the word: '{word}' does not exist in cache")
         return top_n_dict
 
     # get the row of the word we are looking for
@@ -32,7 +37,15 @@ def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
     return top_n_dict
 
 
-def get_top_n_by_categories(sorted_indices: np.ndarray, count: int = 10, categories: list = None) -> np.ndarray:
+# TODO: use a heap to get top n
+def get_top_n_by_categories(sorted_indices: np.ndarray, count: int, categories: list = None) -> np.ndarray:
+    """
+    select top n in the sorted_indices by category
+    :param sorted_indices:
+    :param count: n
+    :param categories:
+    :return:
+    """
     if not categories:
         return sorted_indices[0:count+1]
     else:

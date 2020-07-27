@@ -4,7 +4,6 @@ from collections import defaultdict
 import numpy as np
 from loguru import logger
 
-from service.cache_service import store_matrix_cache, get_matrix_cache
 from service.keyword_service import get_keyword_df
 from util.timer import timeit
 
@@ -23,7 +22,7 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        amount = 200000
+        amount = 500000
         self.keyword_df = get_keyword_df(amount)
         self.unique_keyword = self._get_unique_keyword()
         self.keyword_category_map = self._get_category_map()
