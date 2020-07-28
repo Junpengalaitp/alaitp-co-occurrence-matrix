@@ -6,7 +6,7 @@ from controller import app
 from service import keyword_service
 from service.matrix_service import get_most_related_words
 
-"""Dummy response for no correlated word found"""
+"""ummy rdesponse for no correlated word found"""
 no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}
 
 

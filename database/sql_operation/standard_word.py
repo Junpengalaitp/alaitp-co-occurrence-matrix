@@ -5,9 +5,11 @@ from config.sql_config import conn
 
 def select_keywords(limit: int) -> pd.DataFrame:
     query = f"""
-                SELECT job_id, job_title, standard_word, keyword_type, count 
+                SELECT job_id, standard_word, keyword_type, count
                 FROM keywords_job_model
-                WHERE standard_word IS NOT NULL 
+                WHERE standard_word IS NOT NULL
+                AND keyword_type NOT IN ('GPE', 'DATE', 'CARDINAL', 'PERSON', 'PERCENT', 'WORK_OF_ART')
+                GROUP BY job_id, standard_word, keyword_type, count
                 LIMIT {limit}
              """
     return pd.read_sql_query(query, conn)
@@ -40,7 +42,7 @@ def select_standard_word_by_other_word(other_word: str) -> str:
 
 
 if __name__ == '__main__':
-    df = select_standard_word("Java111")
+    df = select_keywords(100)
     print(df)
 
 

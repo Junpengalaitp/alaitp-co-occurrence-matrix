@@ -1,16 +1,12 @@
-import pprint
-
 import numpy as np
 from loguru import logger
 
 from co_occurrence_matrix import co_occurrence_matrix
 
-pp = pprint.PrettyPrinter()
-
 
 def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
     """
-    get top n for correlated words for word by category
+    get top n for correlated words for word by the categories
     :param word: the root word for correlated words
     :param n: top n
     :param categories: correlated words category
@@ -40,7 +36,7 @@ def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
 # TODO: use a heap to get top n
 def get_top_n_by_categories(sorted_indices: np.ndarray, count: int, categories: list = None) -> np.ndarray:
     """
-    select top n in the sorted_indices by category
+    select top n in the sorted_indices by the categories
     :param sorted_indices:
     :param count: n
     :param categories:
