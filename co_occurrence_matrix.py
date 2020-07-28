@@ -22,7 +22,7 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        amount = 300000
+        amount = 1000000
         self.keyword_df = get_keyword_df(amount)
         self.unique_keyword = self._get_unique_keyword()
         self.keyword_category_map = self._get_category_map()
@@ -55,21 +55,26 @@ class CoOccurrenceMatrix:
            :return: entity_entity_matrix with the keyword indices as row and col, co-occurrence value of the two
                     keywords as value.
         """
-        entity_entity_matrix = np.zeros((len(self.unique_keyword), len(self.unique_keyword)), np.float64)
-        keyword_dict = defaultdict(list)
-        for row in self.keyword_df.itertuples():
-            # Check whether the job_id exist
-            keyword_tuple = (row.standard_word, row.count, row.keyword_type)
-            job_id = row.job_id
-            keyword_dict[job_id].append(keyword_tuple)
+        # use np.int16 here to minimize memory usage
+        entity_entity_matrix = np.zeros((len(self.unique_keyword), len(self.unique_keyword)), np.int16)
+        # aggregate keywords by job
+        keyword_dict = self._get_job_keyword_collection_dict()
 
-        for job_id in keyword_dict:
-            for item in keyword_dict[job_id]:
-                row_idx = self.keyword_idx_dict[item[0]]
-                for word in keyword_dict[job_id]:
-                    col_idx = self.keyword_idx_dict[word[0]]
+        # build the matrix, pair each word with all other words for every job keyword collection
+        for job_keywords in keyword_dict.values():
+            for row_word in job_keywords:
+                row_idx = self.keyword_idx_dict[row_word]
+                for col_word in job_keywords:
+                    col_idx = self.keyword_idx_dict[col_word]
                     entity_entity_matrix[row_idx, col_idx] += 1
         return entity_entity_matrix
+
+    def _get_job_keyword_collection_dict(self) -> dict:
+        """:return: dict of key and value: (job_id, keyword collection)"""
+        job_keyword_list_dict = defaultdict(list)
+        for row in self.keyword_df.itertuples():
+            job_keyword_list_dict[row.job_id].append(row.standard_word)
+        return job_keyword_list_dict
 
     def reload_co_occurrence_matrix(self):
         self.__init__()

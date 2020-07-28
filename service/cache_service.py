@@ -42,7 +42,7 @@ def get_matrix_cache() -> Optional[np.ndarray]:
     cache = redis_template.db(0).get(MATRIX_KEY)
     if cache:
         logger.info("found matrix cache in redis")
-        return np.asarray(json.loads(cache), dtype=np.float64)
+        return np.asarray(json.loads(cache), dtype=np.int16)
 
 
 def standard_word_cache_exist(other_word: str):

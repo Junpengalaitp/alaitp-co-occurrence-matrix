@@ -28,8 +28,12 @@ def get_most_related_words(word: str, n: int, categories: list = None) -> dict:
             keyword = co_occurrence_matrix.unique_keyword[idx]
         except IndexError:
             continue
-        if keyword != word and co_occurred_word_list[idx] != 0:  # remove word itself and count 0 words
-            top_n_dict[keyword] = {"count": co_occurred_word_list[idx], "category": co_occurrence_matrix.keyword_category_map[keyword]}
+        if keyword != word and co_occurred_word_list[idx] != 0:  # skip word itself and count 0 words
+            count = int(co_occurred_word_list[idx])  # convert to normal int, np.int is not json serializable
+            top_n_dict[keyword] = {
+               "count": count,
+               "category": co_occurrence_matrix.keyword_category_map[keyword]
+            }
     return top_n_dict
 
 
@@ -56,6 +60,6 @@ def get_top_n_by_categories(sorted_indices: np.ndarray, count: int, categories: 
                 index_in_category.append(index)
                 if len(index_in_category) > count:
                     break
-        return np.asarray(index_in_category, dtype=np.int32)
+        return index_in_category
 
 
