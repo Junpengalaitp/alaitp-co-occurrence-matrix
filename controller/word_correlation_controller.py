@@ -6,7 +6,7 @@ from controller import app
 from service import keyword_service
 from service.matrix_service import get_most_related_words
 
-"""ummy rdesponse for no correlated word found"""
+"""dummy response for no correlated word found"""
 no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}
 
 
@@ -30,3 +30,7 @@ def generate_most_correlated_words(word: str, amount: int, categories: str = Non
     logger.info(f"most correlated words results: {most_correlated_words}")
     return jsonify(result)
 
+
+@app.route("/main", methods=["GET"])
+def get_main_page():
+    return jsonify({"response": "Hello World!"})
