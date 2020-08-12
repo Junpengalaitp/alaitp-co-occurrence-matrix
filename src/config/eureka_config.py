@@ -1,6 +1,6 @@
 from py_eureka_client import eureka_client
 
-from config.config_server import CONFIG
+from src.config.config_server import CONFIG
 
 
 def connect_eureka(ip, port):

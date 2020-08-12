@@ -2,9 +2,12 @@
 
 import requests
 
+env = "dev"
+config_server_url = "192.168.1.69:8810"
+
 
 def config_from_config_server():
-    r = requests.get("http://localhost:8810/co-occurrence-matrix/default")
+    r = requests.get(f"http://{config_server_url}/co-occurrence-matrix/{env}")
     res = r.json()
     config = {}
     for cfg in res['propertySources']:

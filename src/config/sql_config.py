@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 
-from config.config_server import CONFIG
+from src.config.config_server import CONFIG
 
 SERVER_URL = CONFIG['spring.datasource.url'].split('//')[1]
 username = CONFIG['spring.datasource.username']

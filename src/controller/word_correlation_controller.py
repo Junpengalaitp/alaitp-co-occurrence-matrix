@@ -1,10 +1,10 @@
 from flask import jsonify
 from loguru import logger
 
-from constant.category import category_dict
-from controller import app
-from service import keyword_service
-from service.matrix_service import get_most_related_words
+from src.constant.category import category_dict
+from src.controller import app
+from src.service import keyword_service
+from src.service.matrix_service import get_most_related_words
 
 """dummy response for no correlated word found"""
 no_word_found_res = {"oops, no correlated word found": {"count": 1, "category": "AI"}}

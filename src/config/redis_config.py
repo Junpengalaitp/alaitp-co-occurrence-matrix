@@ -1,7 +1,7 @@
 import redis
 from redis import Redis
 
-from config.config_server import CONFIG
+from src.config.config_server import CONFIG
 
 HOST = CONFIG['spring.redis.host']
 PORT = CONFIG['spring.redis.port']

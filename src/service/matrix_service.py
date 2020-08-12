@@ -3,8 +3,8 @@ import heapq
 import numpy as np
 from loguru import logger
 
-from main.co_occurrence_matrix import co_occurrence_matrix
-from util.timer import timeit
+from src.main.co_occurrence_matrix import co_occurrence_matrix
+from src.util.timer import timeit
 
 
 def get_most_related_words(word: str, n: int, categories: list = None) -> dict:

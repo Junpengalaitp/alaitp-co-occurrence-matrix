@@ -4,8 +4,8 @@ from collections import defaultdict
 import numpy as np
 from loguru import logger
 
-from service.keyword_service import get_keyword_df
-from util.timer import timeit
+from src.service.keyword_service import get_keyword_df
+from src.util.timer import timeit
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

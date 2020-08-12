@@ -1,6 +1,6 @@
 import pandas as pd
 
-from config.sql_config import conn
+from src.config.sql_config import conn
 
 
 def select_keywords(limit: int) -> pd.DataFrame:

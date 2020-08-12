@@ -1,8 +1,8 @@
 import pprint
 from unittest import TestCase
 
-from constant.category import fw, lb, pl, ol
-from service.matrix_service import get_most_related_words
+from src.constant.category import *
+from src.service.matrix_service import get_most_related_words
 
 pp = pprint.PrettyPrinter()
 

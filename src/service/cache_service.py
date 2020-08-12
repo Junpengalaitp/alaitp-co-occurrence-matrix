@@ -7,8 +7,8 @@ import numpy as np
 import pandas as pd
 from loguru import logger
 
-from config.redis_config import redis_template
-from constant.constant import KEYWORD_DF_KEY, MATRIX_KEY
+from src.config.redis_config import redis_template
+from src.constant.constant import KEYWORD_DF_KEY, MATRIX_KEY
 
 enable_cache = True
 
