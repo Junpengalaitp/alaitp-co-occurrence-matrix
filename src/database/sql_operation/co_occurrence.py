@@ -4,10 +4,10 @@ from src.config.sql_config import conn
 from src.main.co_occurrence_matrix import co_occurrence_matrix
 
 
-def insert_idx_to_word(idx: int, word: str) -> None:
+def insert_idx_to_word(idx: int, word: str, category: str) -> None:
     query = f"""
-                INSERT INTO co_occurrence_idx_to_word
-                VALUES ({idx}, '{word}')
+                INSERT INTO co_occurrence_idx_to_word (idx, word, category)
+                VALUES ({idx}, '{word}', '{category}')
              """
     conn.execute(query)
 
@@ -22,7 +22,7 @@ def insert_sorted_word_to_idx(word: str, word_counts: str, sorted_indices: str) 
 
 if __name__ == '__main__':
     for idx, word in enumerate(co_occurrence_matrix.unique_keyword):
-        insert_idx_to_word(idx, word)
+        insert_idx_to_word(idx, word, co_occurrence_matrix.keyword_category_map[word])
 
     for row_idx, row in enumerate(co_occurrence_matrix.entity_entity_matrix):
         word_count = ",".join([str(n) for n in row])
