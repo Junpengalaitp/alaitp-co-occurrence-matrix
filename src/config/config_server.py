@@ -2,8 +2,8 @@
 
 import requests
 
-env = "dev"
-config_server_url = "192.168.1.69:8810"
+env = "test"
+config_server_url = "192.168.31.21:8810"
 
 
 def config_from_config_server():

@@ -22,7 +22,7 @@ class CoOccurrenceMatrix:
         return cls._instance
 
     def __init__(self):
-        amount = 1000000
+        amount = 300000
         self.keyword_df = get_keyword_df(amount)
         self.unique_keyword = self._get_unique_keyword()
         self.keyword_category_map = self._get_category_map()
@@ -43,7 +43,7 @@ class CoOccurrenceMatrix:
     @timeit
     def _get_category_map(self) -> dict:
         """:return: dict of key and value: (keyword: keyword category)"""
-        category_map = defaultdict(str)
+        category_map = {}
         for row in self.keyword_df.itertuples():
             category_map[row.standard_word] = row.keyword_type
         return category_map
