@@ -11,8 +11,10 @@ from src.concurrency.PersistIndexThread import PersistIndexThread
 from src.config.sql_config import conn
 from src.database.sql_operation.co_occurrence import truncate
 from src.main.co_occurrence_matrix import co_occurrence_matrix
+from src.util.timer import timeit
 
 
+@timeit
 def persist_word_to_index():
     idx_to_word_dict = defaultdict(list)
     for idx, word in enumerate(co_occurrence_matrix.unique_keyword):
@@ -32,6 +34,7 @@ def persist_word_to_index():
     logger.info("idx_to_word persisted")
 
 
+@timeit
 def persist_sorted_indices():
     table = "co_occurrence_word_count"
     truncate(table)
@@ -41,7 +44,6 @@ def persist_sorted_indices():
     with ThreadPoolExecutor(max_workers=os.cpu_count() * 4) as executor:
         for thread in threads:
             executor.submit(thread.run(count_down_latch))
-
     logger.info("all sorted_word_to_idx persisted")
 
 

@@ -20,7 +20,7 @@ class PersistIndexThread(Thread):
         super().run()
         count_down.count_down()
         word_count = ",".join([str(n) for n in self.df_row])
-        sorted_indices = ",".join([str(n) for n in np.argsort(self.df_row)[::-1]])
+        sorted_indices = ",".join([str(n) for n in reversed(np.argsort(self.df_row))])
         sorted_word_to_idx_dict = defaultdict(list)
         word = co_occurrence_matrix.unique_keyword[self.row_idx]
         sorted_word_to_idx_dict["word"].append(word)
