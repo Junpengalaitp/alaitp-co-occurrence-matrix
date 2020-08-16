@@ -9,7 +9,7 @@ def select_keywords(limit: int) -> pd.DataFrame:
                 FROM keywords_job_model
                 WHERE standard_word IS NOT NULL
                 AND standard_word SIMILAR TO '[a-zA-Z0-9# -+.$]*'
-                AND keyword_type NOT IN ('GPE', 'DATE', 'CARDINAL', 'PERSON', 'PERCENT', 'WORK_OF_ART')
+                AND keyword_type NOT IN ('GPE', 'DATE', 'CARDINAL', 'PERSON', 'PERCENT', 'WORK_OF_ART', 'MONEY')
                 GROUP BY job_id, standard_word, keyword_type, count
                 LIMIT {limit}
              """
@@ -40,6 +40,7 @@ def select_standard_word_by_other_word(other_word: str) -> str:
         return res.fetchone()[0]
     else:
         return other_word
+
 
 
 if __name__ == '__main__':

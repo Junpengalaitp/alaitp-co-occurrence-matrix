@@ -6,12 +6,7 @@ from src.util.timer import timeit
 @timeit
 def get_keyword_df(limit: int) -> pd.DataFrame:
     """get the keyword df from cache if exist, else get it from SQL DB"""
-    cache = get_keyword_df_cache()
-    if isinstance(cache, pd.DataFrame):
-        return cache
-    else:
-        df = select_keywords(limit)
-    return df
+    return select_keywords(limit)
 
 
 def get_standard_word(other_word: str) -> str:
