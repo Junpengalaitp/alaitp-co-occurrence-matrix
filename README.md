@@ -7,10 +7,12 @@ alaitp-co-occurrence-matrix
 * **Junpeng He** - *Initial work* - [alaitp.com](https://junpengalaitp.github.io/alaitp-frontend/)
 
 ## Main Feature
-* get most correlated words for a given word by word category
+* get most correlated words for a given word by word category.
+* this is no longer a runtime app, it will calculate the matrix and persist matrix data in the database.
+* at runtime job-description-api will fetch the database to get the matrix data
 
 ## Related Modules
-* upstream module: alaitp-frontend
+* job-description-api(get the persisted matrix data from database)
 
 ## Built With
 

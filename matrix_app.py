@@ -7,6 +7,7 @@ from src.config.eureka_config import connect_eureka
 from src.controller import app
 
 
+@DeprecationWarning
 def start_web_service():
     """Start the waitress server using the IP and PORT configured in the config.ini"""
     SERVER_IP = CONFIG['web.server.ip']
@@ -15,10 +16,11 @@ def start_web_service():
     serve(app, host="0.0.0.0", port=PORT)
 
 
+@DeprecationWarning
 def start_test_server():
     """Start the dev server"""
     SERVER_IP = CONFIG['web.server.ip']
-    PORT = 5001
+    PORT = 5002
     connect_eureka(SERVER_IP, PORT)
     app.run(host="0.0.0.0", port=PORT)
 
