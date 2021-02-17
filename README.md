@@ -4,7 +4,7 @@ alaitp-co-occurrence-matrix
 
 ## Author
 
-* **Junpeng He** - *Initial work* - [alaitp.com](https://junpengalaitp.github.io/alaitp-frontend/)
+* **Junpeng He** - *Initial work* - [junpenghe.com](https://junpenghe.com)
 
 ## Main Feature
 * get most correlated words for a given word by word category
